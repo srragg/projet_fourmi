@@ -6,7 +6,7 @@ Noms :
 - Sarah JANATI
 - Ahmed Khadhar
 - Souhaïl JAFOUI-BOULOUZ
-- 
+- Slimane
 
 URL projet_fourmi : https://github.com/srragg/projet_fourmi.git
 
