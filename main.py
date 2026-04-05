@@ -1,32 +1,27 @@
 import tkinter as tk
 import random as r
+from map import *
+from ant import Ant
 
 root = tk.Tk()
-root.title("Fourmi de Langton")
+root.title("Langten's ant")
 
-color1 = "white"
-color2 = "black"
-height = 768
-width = 768
-size = 16
-
-
-#règle les dimensions de l'écran
 root.geometry(f"{width}x{height}")
-root.resizable(False, False)
+root.resizable(False, False)    #rend les dimensions fixes et fidèles au cases         
 
-#crée la matrice aléatoire qui indique si la case est blanche ou noir
-matrice = [["b" if r.randint(1, 2) == 1 else "n" for _ in range(width // size)] for _ in range(height // size)]
+display(matrice, root, height, width, size)                                   #affichage de la fourmi
 
+pos_ant = (r.randint(0, height // size - 1), r.randint(0, width // size - 1)) #position aléatorire de la fourmi
+ant = Ant(pos_ant, root, size, height, width, matrice)                        #création de la fourmi
 
-#fonction qui affiche le grillage
-def display(matrice, screen, height, width, size):
-    for row in range(len(matrice)):
-        for col in range(len(matrice[0])):
-            color = color1 if matrice[row][col] == "b" else color2
-            label = tk.Label(screen, bg=color, width=size, height=size)
-            label.place(x=col * size, y=row * size, width=size, height=size)
-
-display(matrice, root, height, width, size)  
-
-root.mainloop()  
+#boucle de tour de jeu
+def game_loop():    
+    old_pos = (ant.p[0], ant.p[1])  #ancienne position de la fourmi pour redessiner la case après le mouvement de la fourmi
+    ant.move()                          # move() déplace la fourmi
+    update_cell(old_pos[0], old_pos[1]) # met à jour l'affichage de la case précédente
+    ant.draw()                          #on redessine la fourmi
+    root.after(50, game_loop)           #recommence la tour de boucle (par récursivité)
+    
+    
+game_loop()
+root.mainloop()
