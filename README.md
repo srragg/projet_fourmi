@@ -32,3 +32,5 @@ Le but est de simuler le comportement d'une fourmi qui se déplace sur une grill
 ## Structure du code 
 
 Nombre de fichiers :
+
+## Auteurs
