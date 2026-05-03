@@ -24,6 +24,7 @@ taille_case = 15
 grille = []
 fourmi = None  # Stocke la fourmi (ant)
 animation_en_cours = False  # Pour gérer l'animation
+vitesse = 100  #Pouvoir modifier la vitesse de passage des étapes.
 
 #Fonction pour créer une grille aléatoire
 
@@ -70,7 +71,7 @@ def avancer_fourmi():
     if fourmi and animation_en_cours:
         fourmi.move()  # Utilise TA méthode move() de ant.py
         dessiner_grille()  # Redessine la grille et la fourmi
-        fenetre.after(100, avancer_fourmi)  # Animation
+        fenetre.after(vitesse, avancer_fourmi)  # Animation
 
 
 def basculer_animation():
