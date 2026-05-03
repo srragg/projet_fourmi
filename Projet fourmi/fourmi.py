@@ -1,3 +1,6 @@
+from ant import Ant  # Importe la classe Ant depuis ant.py
+
+
 from tkinter import *
 import tkinter as tk
 import random
@@ -12,27 +15,24 @@ fenetre.resizable(height= True, width= True)
 
 
 
-
 # dimensions de la grille (en nombre de cases)
 rows = 30  # nombre de lignes
 cols = 30 # nombre de colonnes
 taille_case = 15
 
-
+# Variables globales
+grille = []
+fourmi = None  # Stocke la fourmi (ant)
+animation_en_cours = False  # Pour gérer l'animation
 
 #Fonction pour créer une grille aléatoire
+
 def creer_grille_aleatoire():
-    grille = []
-    for i in range(rows):
-        ligne = []
-        for j in range(cols):
-            ligne.append(random.choice(["blanc", "noir"]))
-        grille.append(ligne)
-    return grille
+    return [[random.choice(["blanc", "noir"]) for _ in range(cols)] for _ in range(rows)]
 
 # Fonction pour dessiner la grille
 def dessiner_grille():
-    grille = creer_grille_aleatoire()
+    
     canevas.delete("all")  # Efface tout avant de redessiner
     for i in range(rows):
         for j in range(cols):
@@ -40,6 +40,48 @@ def dessiner_grille():
             x2, y2 = x1 + taille_case, y1 + taille_case
             couleur = "black" if grille[i][j] == "noir" else "white"
             canevas.create_rectangle(x1, y1, x2, y2, fill=couleur, outline="black")
+    # Dessiner la fourmi (si elle existe)
+    if fourmi:
+        fourmi.draw()
+
+
+def nouvelle_grille():
+    global fourmi, grille, animation_en_cours
+    
+    animation_en_cours = False  # stop animation
+    
+    grille = creer_grille_aleatoire()
+
+    
+    fourmi = Ant(
+        pos=[rows // 2, cols // 2],
+        screen=canevas,
+        size=taille_case,
+        height=rows * taille_case,
+        width=cols * taille_case,
+        matrice=grille)
+    dessiner_grille()
+
+    bouton_animation.config(text="Démarrer")
+    
+
+
+def avancer_fourmi():
+    if fourmi and animation_en_cours:
+        fourmi.move()  # Utilise TA méthode move() de ant.py
+        dessiner_grille()  # Redessine la grille et la fourmi
+        fenetre.after(100, avancer_fourmi)  # Animation
+
+
+def basculer_animation():
+    global animation_en_cours
+    animation_en_cours = not animation_en_cours
+    if animation_en_cours:
+        avancer_fourmi()
+    bouton_animation.config(text="Arrêter" if animation_en_cours else "Démarrer")
+
+
+
 
 
 # Création du canevas
@@ -47,13 +89,22 @@ canevas = tk.Canvas(fenetre, width=cols*taille_case, height=rows*taille_case, bg
 canevas.pack()
 
 # Bouton pour regénérer une nouvelle grille aléatoire
-bouton = tk.Button(fenetre, text="Nouvelle grille", command=dessiner_grille)
+bouton = tk.Button(fenetre, text="Nouvelle grille", command=nouvelle_grille)
 bouton.pack()
 
-# Dessiner la première grille au lancement
+
+bouton_animation = tk.Button(fenetre, text="Démarrer", command=basculer_animation)
+bouton_animation.pack(side=tk.RIGHT, padx=10)
+
+grille = creer_grille_aleatoire()
+fourmi = Ant(  # Crée TA fourmi avec TES paramètres
+    pos=[rows // 2, cols // 2],  # Position centrale
+    screen=canevas,
+    size=taille_case,
+    height=rows * taille_case,
+    width=cols * taille_case,
+    matrice=grille)
 dessiner_grille()
-
-
 
 
 fenetre.mainloop()

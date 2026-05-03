@@ -12,13 +12,16 @@ class Ant:
         self.label = None  # on sauvegarde le label de la fourmi
     
     def draw(self):
-        """
-            dessine la fourmi (case rouge) au moment T
-        """
-        if self.label is not None:
-            self.label.destroy()  # on détruit l'ancien label rouge
-        self.label = tk.Label(self.sc, bg="red", width=self.s, height=self.s)
-        self.label.place(x=self.p[1] * self.s, y=self.p[0] * self.s, width=self.s, height=self.s)
+    # 1. Si une fourmi était déjà dessinée, on l'efface
+        if hasattr(self, 'label') and self.label:
+            self.sc.delete(self.label)
+
+        # 2. On calcule la position de la fourmi sur le canevas
+        x = self.p[1] * self.s  # Position en X (colonne * taille d'une case)
+        y = self.p[0] * self.s  # Position en Y (ligne * taille d'une case)
+
+        # 3. On dessine un cercle rouge à cette position
+        self.label = self.sc.create_oval(x, y, x + self.s, y + self.s, fill="red", outline="black")
 
     def turn_right(self):
         """
@@ -39,12 +42,12 @@ class Ant:
         se déplace selon sa direction (point cardinal)
         """
         #premiere condition vérifie selon sur quel case est la fourmi
-        if self.m[self.p[0]][self.p[1]] == 'w':   
+        if self.m[self.p[0]][self.p[1]] == 'blanc':   
             self.turn_left()
-            self.m[self.p[0]][self.p[1]] = 'b'
+            self.m[self.p[0]][self.p[1]] = 'noir'
         else:
             self.turn_right()
-            self.m[self.p[0]][self.p[1]] = 'w'
+            self.m[self.p[0]][self.p[1]] = 'blanc'
 
         #selon la direction de la fourmi elle se déplace
         if self.direction == "N":
