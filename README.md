@@ -34,6 +34,6 @@ Le but est de simuler le comportement d'une fourmi qui se déplace sur une grill
 Nombre de fichiers : 4
 
 ## Auteurs
-Slimane et Souhail ont accompli la majorité des bouttons et se sont d'ailleurs occupés de l'interface du Menu
+Slimane et Souhail ont accompli la majorité des bouttons et se sont d'ailleurs occupés de l'interface du Menu. (manque de moyen de Slimane pour travailler de son côté, ils ont du a deux travailler ensemble)
 Sarah s'est occupé entièrement du github et s'est occupé du grillage avec le bouton nouveau_grillage
 Ahmed s'est occupé de la fourmi mais aussi de tout les bugs et erreurs de code.
