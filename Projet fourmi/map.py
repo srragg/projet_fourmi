@@ -1,58 +1,31 @@
-import tkinter as tk
-import json
-import os
+import random as r
 
-SAVE_FILE = "save.json"
+blanc = "white"
+noir = "black"
+height = 640   # ← 512 → 640
+width = 640    # ← 512 → 640
+size = 20      # ← 16 → 20
 
-def lancer_menu():
+
+#initialisationd de la matrice
+matrice = [["b" if r.randint(1, 2) == 1 else "w" for _ in range(width // size)] for _ in range(height // size)]
+cell_ids = [[None for _ in range(width // size)] for _ in range(height // size)]
+
+def display(matrice, canvas, height, width, size):
     """
-    ouverture du menu pour permettre soit de remettre l'ancienne position
-    soit lancer une nouvelle partie
+    Affichage initial de chaque case sur le canvas.
     """
-    root = tk.Tk()
-    root.title("Fourmi de Langton")
-    root.geometry("400x350")
-    root.configure(bg="black")
+    for row in range(len(matrice)):
+        for col in range(len(matrice[0])):
+            color = blanc if matrice[row][col] == "b" else noir
+            x1, y1 = col * size, row * size
+            cell_id = canvas.create_rectangle(x1, y1, x1 + size, y1 + size,
+                                              fill=color, outline="gray")  # ← outline ajouté
+            cell_ids[row][col] = cell_id
 
-    label = tk.Label(root, text="🐜 Jeu de la Fourmi", bg="black", fg="cyan",
-                     font=("Helvetica", 28, "bold"), pady=30)
-    label.pack()
-
-    def on_jouer():
-        """
-        on crée le nv dossier
-        """
-        root.destroy()
-        from main import lancer_jeu
-        lancer_jeu()
-
-    def on_charger():
-        """
-        on charge l'ancien dosser
-        """
-        root.destroy()
-        from main import lancer_jeu
-        with open(SAVE_FILE, "r") as f:
-            state = json.load(f)
-        lancer_jeu(state=state)
+def update_cell(canvas, row, col):
     """
-    on retrouve les boutons du menu
+    Mise à jour de la couleur d'une case sur le canvas.
     """
-    bouton_jouer = tk.Button(root, text="▶  Jouer", bg="cyan", fg="black",
-                             font=("Helvetica", 20, "bold"), padx=20, pady=10,
-                             command=on_jouer, relief="flat", cursor="hand2")
-    bouton_jouer.pack(pady=5)
-
-    # Bouton charger uniquement si une sauvegarde existe
-    if os.path.exists(SAVE_FILE):
-        bouton_charger = tk.Button(root, text="📂  Charger la partie", bg="#005599", fg="white",
-                                   font=("Helvetica", 16, "bold"), padx=20, pady=8,
-                                   command=on_charger, relief="flat", cursor="hand2")
-        bouton_charger.pack(pady=5)
-
-    bouton_quitter = tk.Button(root, text="✕  Quitter", bg="red", fg="white",
-                               font=("Helvetica", 14), padx=10, pady=5,
-                               command=root.quit, relief="flat", cursor="hand2")
-    bouton_quitter.pack(pady=10)
-
-    root.mainloop()
+    color = blanc if matrice[row][col] == "b" else noir
+    canvas.itemconfig(cell_ids[row][col], fill=color)
