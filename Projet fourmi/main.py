@@ -22,6 +22,15 @@ def lancer_jeu():
         paused = not paused
         pause_bouton.config(text="Reprendre" if paused else "Pause")
 
+    def step_once():
+        if not paused:
+            return  
+
+        old_pos = (ant.p[0], ant.p[1])
+        ant.move()
+        update_cell(old_pos[0], old_pos[1])
+        ant.draw()
+
 
     def game_loop():
         nonlocal paused
@@ -38,6 +47,10 @@ def lancer_jeu():
     pause_bouton = tk.Button( root, text="Pause",bg="red", fg="black",
                        font=("Helvetica", 20, "bold"), command=toggle_pause)
     pause_bouton.place(x=10, y=10)
+
+    next_bouton = tk.Button(root, text="Next",bg="red", fg="black",
+                       font=("Helvetica", 20, "bold"), command=step_once)
+    next_bouton.place(x=10, y=70)
 
     game_loop()
     root.mainloop()
