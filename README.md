@@ -25,12 +25,15 @@ Le but est de simuler le comportement d'une fourmi qui se déplace sur une grill
 
  ## Paramètres de l'application 
 
- - Taille de la grille : 
+ - Taille de la grille : 32 * 32
  - Automate cellulaire : Fourmi de Langton
- - Nombres de boutons :
+ - Nombres de boutons : 3 (6 au total avec ceux du menu)
   
 ## Structure du code 
 
-Nombre de fichiers :
+Nombre de fichiers : 4
 
 ## Auteurs
+Slimane et Souhail ont accompli la majorité des bouttons et se sont d'ailleurs occupés de l'interface du Menu
+Sarah s'est occupé entièrement du github et s'est occupé du grillage avec le bouton nouveau_grillage
+Ahmed s'est occupé de la fourmi mais aussi de tout les bugs et erreurs de code.
