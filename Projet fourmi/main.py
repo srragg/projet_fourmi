@@ -81,6 +81,8 @@ def lancer_jeu(state=None):
             ant.draw()                        # Redessine la fourmi à sa nouvelle position
             root.after(var_vitesse, game_loop)  # Rappel après le délai défini
 
+    
+
     def nouvelle_grille():
         """
         Réinitialise la partie :
@@ -149,6 +151,21 @@ def lancer_jeu(state=None):
         bouton_save.config(text="Sauvegardé !", bg="#005500")
         root.after(2000, lambda: bouton_save.config(text="Sauvegarder", bg="#333333"))
 
+    def step_once():
+        """
+        Avance la fourmi d'un seul pas, uniquement si l'animation est en pause.
+        on l'utilse pour avancer étape par étape.
+        """
+        if animation_en_cours[0]:  # ← si l'animation tourne, on ne fait rien
+            return
+        old_pos = (ant.p[0], ant.p[1])
+        ant.move()
+        update_cell(matrice, cell_ids, canvas, old_pos[0], old_pos[1])  # ← arguments manquants ajoutés
+        ant.draw()
+
+
+
+
     #    Création des boutons 
 
     # Bouton pour générer une nouvelle grille aléatoire
@@ -167,6 +184,12 @@ def lancer_jeu(state=None):
                             padx=10, pady=5, state=tk.DISABLED)
 
     bouton_save.pack(side=tk.BOTTOM, padx=10, pady=5)
+
+    #Bouton next pour l'instance d'après
+    next_button = tk.Button(root, text="Next", command=step_once, bg="red", fg="black", padx = 10, pady = 5)
+    next_button.pack(side = tk.BOTTOM, padx = 10, pady = 5)
+
+
 
     root.mainloop()
 
